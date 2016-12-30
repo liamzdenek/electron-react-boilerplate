@@ -11,7 +11,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import BabiliPlugin from 'babili-webpack-plugin';
 import baseConfig from './webpack.config.base';
 
-export default validate(merge(baseConfig, {
+export default merge(baseConfig, {
   devtool: 'cheap-module-source-map',
 
   entry: [
@@ -82,4 +82,4 @@ export default validate(merge(baseConfig, {
 
   // https://github.com/chentsulin/webpack-target-electron-renderer#how-this-module-works
   target: 'electron-renderer'
-}));
+})

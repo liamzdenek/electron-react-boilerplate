@@ -3,12 +3,11 @@
  */
 
 import path from 'path';
-import validate from 'webpack-validator';
 import {
   dependencies as externals
 } from './app/package.json';
 
-export default validate({
+export default {
   module: {
     loaders: [{
       test: /\.jsx?$/,
@@ -54,14 +53,15 @@ export default validate({
 
   // https://webpack.github.io/docs/configuration.html#resolve
   resolve: {
-    root: [
-      path.resolve('./app'),
-    ],
-    extensions: ['', '.js', '.jsx', '.json'],
-    packageMains: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main']
+    modules: [path.resolve('./app'), "node_modules"],
+    //root: [
+    //  path.resolve('./app'),
+    //],
+    extensions: ['.js', '.jsx', '.json'],
+    //mainFields: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main']
   },
 
   plugins: [],
 
   externals: Object.keys(externals || {})
-});
+}

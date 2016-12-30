@@ -5,16 +5,13 @@
  */
 
 import webpack from 'webpack';
-import validate from 'webpack-validator';
 import merge from 'webpack-merge';
 import formatter from 'eslint-formatter-pretty';
 import baseConfig from './webpack.config.base';
 
 const port = process.env.PORT || 3000;
 
-export default validate(merge(baseConfig, {
-  debug: true,
-
+export default merge(baseConfig, {
   devtool: 'inline-source-map',
 
   entry: [
@@ -60,9 +57,9 @@ export default validate(merge(baseConfig, {
     ]
   },
 
-  eslint: {
-    formatter
-  },
+  //eslint: {
+  //  formatter
+  //},
 
   plugins: [
     // https://webpack.github.io/docs/hot-module-replacement-with-webpack.html
@@ -75,9 +72,17 @@ export default validate(merge(baseConfig, {
     // NODE_ENV should be production so that modules do not perform certain development checks
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development')
+    }),
+
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        eslint: {
+          formatter: require('eslint-formatter-pretty')
+        }
+      }
     })
   ],
 
   // https://github.com/chentsulin/webpack-target-electron-renderer#how-this-module-works
   target: 'electron-renderer'
-}));
+})
