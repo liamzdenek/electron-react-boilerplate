@@ -17,6 +17,30 @@ export default validate({
     }, {
       test: /\.json$/,
       loader: 'json-loader'
+    }, {
+      // Do not transform vendor's CSS with CSS-modules
+      // The point is that they remain in global scope.
+      // Since we require these CSS files in our JS or CSS files,
+      // they will be a part of our compilation either way.
+      // So, no need for ExtractTextPlugin here.
+      test: /\.css$/,
+      include: /node_modules/,
+      loaders: ['style-loader', 'css-loader'],
+    }, {
+      test: /\.(eot|svg|ttf|woff|woff2)$/,
+      loader: 'file-loader',
+    }, {
+      test: /\.(jpg|png|gif)$/,
+      loaders: [
+        'file-loader',
+        'image-webpack?{progressive:true, optimizationLevel: 7, interlaced: false, pngquant:{quality: "65-90", speed: 4}}',
+      ],
+    }, {
+      test: /\.html$/,
+      loader: 'html-loader',
+    }, {
+      test: /\.(mp4|webm)$/,
+      loader: 'url-loader?limit=10000',
     }]
   },
 
@@ -30,6 +54,9 @@ export default validate({
 
   // https://webpack.github.io/docs/configuration.html#resolve
   resolve: {
+    root: [
+      path.resolve('./app'),
+    ],
     extensions: ['', '.js', '.jsx', '.json'],
     packageMains: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main']
   },
